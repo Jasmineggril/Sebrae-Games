@@ -1,11 +1,9 @@
 # Build stage
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 WORKDIR /app
 
-# Copy monorepo
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
-COPY lib ./lib
-COPY artifacts/fazenda-brasil ./artifacts/fazenda-brasil
+# Copy entire repo (including tsconfig.base.json)
+COPY . .
 
 # Install dependencies
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
@@ -15,7 +13,7 @@ WORKDIR /app/artifacts/fazenda-brasil
 RUN PORT=3000 BASE_PATH=/ pnpm build
 
 # Production stage
-FROM node:20-alpine
+FROM node:20-slim
 WORKDIR /app
 
 # Install simple HTTP server
