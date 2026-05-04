@@ -26,6 +26,7 @@ Fazenda Brasil é um simulador de fazenda com:
 
 A principal decisão do jogo está na escolha entre Orgânico e Químico. Essa escolha altera a qualidade do solo, o ritmo da partida e o retorno da safra, criando uma camada estratégica simples de entender e fácil de demonstrar.
 
+
 ## Estrutura do projeto
 
 ```

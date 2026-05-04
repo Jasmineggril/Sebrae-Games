@@ -74,11 +74,15 @@ export default function MarketScreen({ onBack }: Props) {
           </Card>
 
           {/* Diferenciais */}
-          <Card title="✨ Diferenciais Competitivos" color="#b71c1c">
-            <StatItem emoji="📊" label="Dados reais do IBGE/Sebrae" value="Único no segmento" />
-            <StatItem emoji="🧠" label="Decisão orgânico vs químico" value="Pensamento crítico" />
-            <StatItem emoji="🇧🇷" label="Identidade cultural 100% BR" value="5 culturas nativas" />
-            <StatItem emoji="🔄" label="Loop de retenção" value="Missões + conquistas" />
+          <Card title="Diferenciais competitivos" color="#b71c1c">
+            <StatItem emoji="Retenção" label="Missões, conquistas e retorno à fazenda" value="Volta natural" />
+            <StatItem emoji="Gameplay" label="Loop fácil de aprender e repetir" value="Simples e viciante" />
+            <StatItem emoji="Onboarding" label="Primeira experiência guiada por tutorial" value="Rápido e claro" />
+            <StatItem emoji="Polimento" label="Interface limpa e sem atrito visual" value="Boa leitura" />
+            <StatItem emoji="Crescimento" label="Progressão constante e previsível" value="Sem picos artificiais" />
+            <StatItem emoji="Mercado" label="Público educacional, casual e institucional" value="Aderência ampla" />
+            <StatItem emoji="Diferencial" label="Orgânico vs Químico altera solo e safra" value="Decisão estratégica" />
+            <StatItem emoji="Build" label="Versão jogável, testada e estável" value="Pronta para demo" />
           </Card>
         </div>
 
