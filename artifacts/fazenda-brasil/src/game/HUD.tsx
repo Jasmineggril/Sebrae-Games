@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { CROPS, type CropType, type Tool, type GameState } from "./types";
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   onShop: () => void;
   onMenu: () => void;
   onRestart: () => void;
+  tutorialStep?: number;
 }
 
 const TOOLS: { id: Tool; label: string; emoji: string; active: string }[] = [
@@ -15,7 +17,35 @@ const TOOLS: { id: Tool; label: string; emoji: string; active: string }[] = [
   { id: "harvest", label: "Colher", emoji: "✂️", active: "#d4ac0d" },
 ];
 
-export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu, onRestart }: Props) {
+export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu, onRestart, tutorialStep = 0 }: Props) {
+  const highlightForStep = (step: number) => tutorialStep === step ? {
+    animation: 'pulseHighlight 1.3s infinite',
+    boxShadow: '0 0 26px rgba(79,195,247,0.18), 0 0 8px rgba(79,195,247,0.12)'
+  } : {};
+
+  const plantRef = useRef<HTMLButtonElement | null>(null);
+  const waterRef = useRef<HTMLButtonElement | null>(null);
+  const harvestRef = useRef<HTMLButtonElement | null>(null);
+  const [indicator, setIndicator] = useState<{ left: number; top: number; text: string } | null>(null);
+
+  useEffect(() => {
+    const map: Record<number, React.RefObject<HTMLButtonElement>> = {
+      1: plantRef,
+      3: waterRef,
+      4: harvestRef,
+    } as any;
+    const ref = map[tutorialStep];
+    if (!ref || !ref.current) { setIndicator(null); return; }
+    const rect = ref.current.getBoundingClientRect();
+    // position indicator above the button
+    setIndicator({ left: rect.left + rect.width / 2, top: rect.top - 10, text: tutorialStep === 1 ? 'Clique em Plantar' : tutorialStep === 3 ? 'Clique em Regar' : 'Clique em Colher' });
+    const onResize = () => {
+      const r = ref.current?.getBoundingClientRect();
+      if (r) setIndicator({ left: r.left + r.width / 2, top: r.top - 10, text: indicator?.text ?? '' });
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [tutorialStep]);
   return (
     <div style={{
       background: "rgba(0,0,0,0.72)",
@@ -29,7 +59,7 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
       flexWrap: "wrap",
       minHeight: 62,
       position: "relative",
-      zIndex: 20,
+      zIndex: 60,
     }}>
       {/* Logo */}
       <div style={{
@@ -71,12 +101,14 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
       <div style={{ flex: 1 }} />
 
       {/* Tools */}
+      <style>{`@keyframes pulseHighlight { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.02); } 100% { transform: translateY(0) scale(1); } }`}</style>
       <div style={{ display: "flex", gap: 6 }}>
         {TOOLS.map(tool => {
           const isActive = state.selectedTool === tool.id;
           return (
             <button
               key={tool.id}
+              ref={tool.id === 'plant' ? plantRef : tool.id === 'water' ? waterRef : harvestRef}
               onClick={() => onSelectTool(tool.id)}
               style={{
                 background: isActive
@@ -90,6 +122,9 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
                 cursor: "pointer", fontSize: 13, fontWeight: 700,
                 transition: "all 0.15s",
                 boxShadow: isActive ? `0 0 12px ${tool.active}66` : "none",
+                ...(tool.id === 'plant' ? highlightForStep(1) : {}),
+                ...(tool.id === 'water' ? highlightForStep(3) : {}),
+                ...(tool.id === 'harvest' ? highlightForStep(4) : {}),
                 whiteSpace: "nowrap",
               }}
             >
@@ -98,6 +133,15 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
           );
         })}
       </div>
+
+      {indicator && (
+        <div style={{ position: 'fixed', left: indicator.left, top: Math.max(8, indicator.top), transform: 'translateX(-50%)', zIndex: 80, pointerEvents: 'none' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+            <div style={{ background: 'linear-gradient(135deg,#4fc3f7,#1565c0)', color: '#012', padding: '6px 10px', borderRadius: 8, fontWeight: 800, boxShadow: '0 6px 20px rgba(25,118,210,0.18)' }}>{indicator.text}</div>
+            <div style={{ width: 0, height: 0, borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '10px solid rgba(79,195,247,0.92)' }} />
+          </div>
+        </div>
+      )}
 
       {/* Crop selector */}
       {state.selectedTool === "plant" && (

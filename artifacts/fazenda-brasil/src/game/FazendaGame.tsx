@@ -17,6 +17,7 @@ import CoinParticles, { type Particle } from "./CoinParticle";
 import TutorialOverlay from "./TutorialOverlay";
 import LevelUpModal from "./LevelUpModal";
 import AchievementBanner from "./AchievementBanner";
+import { playClick, playChime, playHarvest, playBuy, resumeAudio } from './Sound';
 
 const INITIAL_SEEDS: Record<CropType, number> = {
   milho: 5, soja: 5, cafe: 2, cana: 2, mandioca: 3,
@@ -49,6 +50,7 @@ function makeInitialState(): GameState {
     objectives: makeObjectives(0),
     achievements: [...INITIAL_ACHIEVEMENTS],
     tutorialDone: false,
+    upgrades: { sellBonus: 0, wateringEfficiency: 0, toolLevel: 0 },
   };
 }
 
@@ -69,6 +71,7 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
   const [toast, setToast] = useState<string | null>(null);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [showTutorial, setShowTutorial] = useState(true);
+  const [tutorialStep, setTutorialStepState] = useState(0);
   const [levelUpInfo, setLevelUpInfo] = useState<{ level: number; reward: number } | null>(null);
   const [pendingAchievement, setPendingAchievement] = useState<Achievement | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -160,7 +163,10 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         plots: prev.plots.map(plot => {
           if ((plot.state === "planted" || plot.state === "watered") && plot.plantedAt && plot.crop) {
             const base = CROPS[plot.crop].growthTime * 1000;
-            const multiplier = plot.strategy === "chemical" ? 0.55 : plot.state === "watered" ? 0.65 : 1;
+            // apply upgrade effects: wateringEfficiency reduces time further
+            const wateringEff = prev.upgrades?.wateringEfficiency ?? 0;
+            const wateredMultiplier = Math.max(0.4, 0.65 - (wateringEff * 0.03));
+            const multiplier = plot.strategy === "chemical" ? 0.55 : plot.state === "watered" ? wateredMultiplier : 1;
             if (now - plot.plantedAt >= base * multiplier) {
               return { ...plot, state: "ready" as PlotState };
             }
@@ -177,11 +183,54 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
     const interval = setInterval(() => {
       setState(prev => {
         const newDay = prev.day + 1;
-        return { ...prev, day: newDay, objectives: makeObjectives(newDay - 1) };
+        const passive = prev.level * 2 + (prev.upgrades?.sellBonus ?? 0);
+        if (passive > 0) {
+          // small daily bonus to keep loop engaging
+          setTimeout(() => showToast(`Bônus do dia: +R$${passive}`), 400);
+        }
+        return { ...prev, day: newDay, objectives: makeObjectives(newDay - 1), coins: prev.coins + passive };
       });
     }, 60000);
     return () => clearInterval(interval);
   }, []);
+
+  // Tutorial auto-advance: when player plants, waters or harvests, advance tutorial steps and show overlay hints
+  useEffect(() => {
+    // after planting (some plot becomes planted)
+    if (tutorialStep === 2) {
+      const planted = state.plots.some(p => p.state === "planted");
+      if (planted) {
+        setShowTutorial(true);
+        setTutorialStepState(3); // show water step
+      }
+    }
+    // after watering
+    if (tutorialStep === 3) {
+      const watered = state.plots.some(p => p.state === "watered");
+      if (watered) {
+        setShowTutorial(true);
+        setTutorialStepState(4); // show harvest step
+      }
+    }
+  }, [state.plots, tutorialStep]);
+
+  useEffect(() => {
+    // when strategy modal opens after initial plant click, advance to strategy step
+    if (tutorialStep === 1 && modal.kind === "strategy") {
+      setTutorialStepState(2);
+    }
+
+    // when harvest event produced a ficha modal
+    if (tutorialStep === 4 && modal.kind === "ficha") {
+      setShowTutorial(true);
+      setTutorialStepState(5); // show ficha/learn step
+    }
+    // after ficha closed, move to final step (feira) and show overlay
+    if (tutorialStep === 5 && modal.kind === "none") {
+      setShowTutorial(true);
+      setTutorialStepState(6);
+    }
+  }, [modal.kind, tutorialStep]);
 
   const handlePlotClick = useCallback((plotId: number) => {
     setState(prev => {
@@ -205,6 +254,7 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
 
       if (prev.selectedTool === "water" && plot.state === "planted") {
         showToast("💧 Regado! Cresce muito mais rápido agora.");
+        try { resumeAudio(); playClick(); } catch (e) {}
         const { state: afterObj, bonusCoins } = updateObjectives(prev, { waterCount: 1 });
         return {
           ...afterObj,
@@ -254,6 +304,8 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         ),
       };
 
+      try { resumeAudio(); playClick(); } catch (e) {}
+
       const { state: afterObj, bonusCoins } = updateObjectives(baseState, {
         plantCount: 1,
         organicCount: isOrganic ? 1 : 0,
@@ -274,9 +326,12 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
       const base = CROPS[crop].sellPrice;
       const chemBonus = strategy === "chemical" ? 15 : 0;
       const soilMod = prev.soilQuality < 50 ? -5 : 0;
-      const earned = Math.max(5, base + chemBonus + soilMod + event.coinBonus);
+      const sellBonus = prev.upgrades?.sellBonus ?? 0;
+      const toolLevel = prev.upgrades?.toolLevel ?? 0;
+      const earnedBase = base + chemBonus + soilMod + event.coinBonus + sellBonus;
+      const earned = Math.max(5, earnedBase + Math.floor(earnedBase * (toolLevel * 0.05)));
       const soilChange = strategy === "organic" ? 5 : 0;
-      const xpGain = CROPS[crop].xpReward;
+      const xpGain = CROPS[crop].xpReward + toolLevel * 2;
 
       const newHarvestCount = prev.harvestCount + 1;
       const newSoilQuality = Math.min(100, Math.max(0, prev.soilQuality + soilChange));
@@ -312,6 +367,7 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
 
       spawnParticle(earned);
       setModal({ kind: "ficha", crop, earned });
+      try { resumeAudio(); playHarvest(); } catch (e) {}
       return afterAch;
     });
   }, [modal, spawnParticle, addXP, updateObjectives, checkAchievements]);
@@ -330,6 +386,17 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         coins: prev.coins - cost,
         seeds: { ...prev.seeds, [crop]: prev.seeds[crop] + qty },
       };
+    });
+  }, [showToast]);
+
+  const handleBuyUpgrade = useCallback((key: 'sellBonus' | 'wateringEfficiency' | 'toolLevel', cost: number, amount = 1) => {
+    setState(prev => {
+      if (prev.coins < cost) { showToast('Moedas insuficientes para upgrade!'); return prev; }
+      const upgrades = { ...(prev.upgrades || { sellBonus: 0, wateringEfficiency: 0, toolLevel: 0 }) };
+      upgrades[key] = (upgrades[key] || 0) + amount;
+      showToast(`Upgrade comprado: ${key} +${amount}`);
+      try { resumeAudio(); playBuy(); } catch (e) {}
+      return { ...prev, coins: prev.coins - cost, upgrades };
     });
   }, [showToast]);
 
@@ -357,10 +424,22 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
 
       {/* Tutorial */}
       {showTutorial && (
-        <TutorialOverlay onDone={() => {
-          setShowTutorial(false);
-          setState(prev => ({ ...prev, tutorialDone: true }));
-        }} />
+        <TutorialOverlay
+          step={tutorialStep}
+          setStep={(n: number) => {
+            // when moving to the first actionable step, hide overlay so player can interact
+            if (n === 1) {
+              setShowTutorial(false);
+              setTutorialStepState(1);
+              return;
+            }
+            setTutorialStepState(n);
+          }}
+          onDone={() => {
+            setShowTutorial(false);
+            setState(prev => ({ ...prev, tutorialDone: true }));
+          }}
+        />
       )}
 
       {/* Level up */}
@@ -381,12 +460,51 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
       {/* Top HUD */}
       <HUD
         state={state}
-        onSelectTool={tool => setState(prev => ({ ...prev, selectedTool: tool as Tool }))}
+        tutorialStep={tutorialStep}
+        onSelectTool={(tool) => {
+          setState(prev => ({ ...prev, selectedTool: tool as Tool }));
+          // advance tutorial if player selected the expected tool
+          const expected: Record<number, Tool> = { 1: 'plant', 3: 'water', 4: 'harvest' };
+          if (tutorialStep in expected && expected[tutorialStep] === tool) {
+            // hide focus overlay to allow interaction with game
+            setShowTutorial(false);
+            setTutorialStepState(tutorialStep + 1);
+          }
+        }}
         onSelectCrop={crop => setState(prev => ({ ...prev, selectedCrop: crop as CropType }))}
         onShop={() => setShowShop(true)}
         onMenu={onMenu}
         onRestart={handleRestart}
       />
+
+      {/* Tutorial focus overlay: blocks interaction except HUD when tutorial expects a tool click */}
+      {([1, 3, 4].includes(tutorialStep)) && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 30,
+          background: 'rgba(0,0,0,0.46)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          pointerEvents: 'auto'
+        }}>
+          <div style={{ color: '#fff', textAlign: 'center', maxWidth: 520, padding: 18 }}>
+            <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>
+              {tutorialStep === 1 ? 'Clique em "Plantar"' : tutorialStep === 3 ? 'Clique em "Regar"' : 'Clique em "Colher"'}
+            </div>
+            <div style={{ opacity: 0.9, marginBottom: 12 }}>
+              Siga o tutorial: essa ação é necessária para aprender a mecânica.
+            </div>
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+              <button onClick={() => { setShowTutorial(false); setState(prev => ({ ...prev, tutorialDone: true })); }}
+                style={{ padding: '8px 12px', borderRadius: 10, background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.12)' }}>
+                Continuar manualmente
+              </button>
+              <button onClick={() => { setShowTutorial(false); setTutorialStepState(0); setState(prev => ({ ...prev, tutorialDone: true })); }}
+                style={{ padding: '8px 12px', borderRadius: 10, background: 'linear-gradient(135deg,#e74c3c,#c0392b)', color: '#fff', border: 'none', fontWeight: 700 }}>
+                Pular tutorial
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main content: side panel + farm grid */}
       <div style={{
@@ -445,7 +563,9 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
           coins={state.coins}
           seeds={state.seeds}
           playerLevel={state.level}
+          upgrades={state.upgrades}
           onBuy={handleBuy}
+          onBuyUpgrade={handleBuyUpgrade}
           onClose={() => setShowShop(false)}
         />
       )}

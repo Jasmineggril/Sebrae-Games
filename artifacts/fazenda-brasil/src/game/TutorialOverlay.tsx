@@ -46,11 +46,12 @@ const STEPS: Step[] = [
 ];
 
 interface Props {
+  step: number;
+  setStep: (n: number) => void;
   onDone: () => void;
 }
 
-export default function TutorialOverlay({ onDone }: Props) {
-  const [step, setStep] = useState(0);
+export default function TutorialOverlay({ step, setStep, onDone }: Props) {
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
 
@@ -73,10 +74,8 @@ export default function TutorialOverlay({ onDone }: Props) {
         position: "relative",
         overflow: "hidden",
       }}>
-        {/* Glow accent */}
         <div style={{ position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: "50%", background: "rgba(100,200,255,0.06)" }} />
 
-        {/* Step counter */}
         <div style={{ display: "flex", gap: 6, marginBottom: 24, justifyContent: "center" }}>
           {STEPS.map((_, i) => (
             <div key={i} style={{
@@ -87,22 +86,18 @@ export default function TutorialOverlay({ onDone }: Props) {
           ))}
         </div>
 
-        {/* Emoji */}
         <div style={{ textAlign: "center", fontSize: 64, marginBottom: 16, filter: "drop-shadow(0 4px 16px rgba(79,195,247,0.4))" }}>
           {current.emoji}
         </div>
 
-        {/* Title */}
         <h2 style={{ color: "#e3f2fd", fontSize: 22, fontWeight: 900, textAlign: "center", margin: "0 0 14px", lineHeight: 1.3 }}>
           {current.title}
         </h2>
 
-        {/* Description */}
         <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 15, lineHeight: 1.7, textAlign: "center", margin: "0 0 28px" }}>
           {current.desc}
         </p>
 
-        {/* Buttons */}
         <div style={{ display: "flex", gap: 10 }}>
           {step > 0 && (
             <button
@@ -133,7 +128,6 @@ export default function TutorialOverlay({ onDone }: Props) {
           </button>
         </div>
 
-        {/* Skip */}
         {!isLast && (
           <button
             onClick={onDone}

@@ -102,6 +102,11 @@ export interface GameState {
   objectives: Objective[];
   achievements: Achievement[];
   tutorialDone: boolean;
+  upgrades?: {
+    sellBonus: number; // extra coins per harvest
+    wateringEfficiency: number; // numeric level
+    toolLevel: number; // affects XP or other effects
+  };
 }
 
 export interface RandomEvent {

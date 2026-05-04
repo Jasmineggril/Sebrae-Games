@@ -4,11 +4,13 @@ interface Props {
   coins: number;
   seeds: Record<CropType, number>;
   playerLevel: number;
+  upgrades?: { sellBonus: number; wateringEfficiency: number; toolLevel: number };
   onBuy: (crop: CropType, qty: number) => void;
+  onBuyUpgrade?: (key: 'sellBonus' | 'wateringEfficiency' | 'toolLevel', cost: number, amount?: number) => void;
   onClose: () => void;
 }
 
-export default function ShopModal({ coins, seeds, playerLevel, onBuy, onClose }: Props) {
+export default function ShopModal({ coins, seeds, playerLevel, onBuy, onBuyUpgrade, onClose }: Props) {
   return (
     <div style={{
       position: "fixed", inset: 0,
@@ -114,6 +116,40 @@ export default function ShopModal({ coins, seeds, playerLevel, onBuy, onClose }:
           })}
         </div>
 
+        {/* Upgrades */}
+        <div style={{ marginTop: 8, marginBottom: 18 }}>
+          <h3 style={{ color: '#fff', margin: '8px 0', fontSize: 15 }}>🔧 Melhorias</h3>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {/** sellBonus upgrade card */}
+            <UpgradeCard
+              title="+R$ por colheita"
+              desc="Aumenta o bônus de venda por colheita"
+              cost={computeCost(upgrades?.sellBonus ?? 0, 100)}
+              level={upgrades?.sellBonus ?? 0}
+              disabled={coins < computeCost(upgrades?.sellBonus ?? 0, 100)}
+              onBuy={() => onBuyUpgrade && onBuyUpgrade('sellBonus', computeCost(upgrades?.sellBonus ?? 0, 100), 1)}
+            />
+            {/** watering efficiency */}
+            <UpgradeCard
+              title="Irrigação"
+              desc="Melhora a eficiência da rega"
+              cost={computeCost(upgrades?.wateringEfficiency ?? 0, 80)}
+              level={upgrades?.wateringEfficiency ?? 0}
+              disabled={coins < computeCost(upgrades?.wateringEfficiency ?? 0, 80)}
+              onBuy={() => onBuyUpgrade && onBuyUpgrade('wateringEfficiency', computeCost(upgrades?.wateringEfficiency ?? 0, 80), 1)}
+            />
+            {/** tool level */}
+            <UpgradeCard
+              title="Melhor ferramenta"
+              desc="Aumenta eficiência e XP"
+              cost={computeCost(upgrades?.toolLevel ?? 0, 120)}
+              level={upgrades?.toolLevel ?? 0}
+              disabled={coins < computeCost(upgrades?.toolLevel ?? 0, 120)}
+              onBuy={() => onBuyUpgrade && onBuyUpgrade('toolLevel', computeCost(upgrades?.toolLevel ?? 0, 120), 1)}
+            />
+          </div>
+        </div>
+
         <button
           onClick={onClose}
           style={{
@@ -150,5 +186,47 @@ function BuyBtn({ label, disabled, onClick }: { label: string; disabled: boolean
     >
       {label}
     </button>
+  );
+}
+
+function UpgradeCard({ title, desc, cost, onBuy }: { title: string; desc: string; cost: number; onBuy: () => void }) {
+  return (
+    <div style={{
+      background: 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06))',
+      border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 10,
+      minWidth: 120, display: 'flex', flexDirection: 'column', gap: 8,
+    }}>
+      <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{title}</div>
+      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>{desc}</div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ color: '#ffd580', fontWeight: 800 }}>R$ {cost}</div>
+        <button onClick={onBuy} style={{ background: 'linear-gradient(135deg,#27ae60,#1e8449)', color: '#fff', border: 0, padding: '6px 8px', borderRadius: 8, cursor: 'pointer', fontWeight: 800 }}>Comprar</button>
+      </div>
+    </div>
+  );
+}
+
+function computeCost(level: number, base: number) {
+  // exponential growth per level
+  return Math.max(base, Math.ceil(base * Math.pow(1.35, level)));
+}
+
+function UpgradeCard({ title, desc, cost, onBuy, level, disabled }: { title: string; desc: string; cost: number; onBuy: () => void; level?: number; disabled?: boolean }) {
+  return (
+    <div style={{
+      background: 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06))',
+      border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 10,
+      minWidth: 120, display: 'flex', flexDirection: 'column', gap: 8,
+    }}>
+      <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span>{title}</span>
+        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }}>Lv {level ?? 0}</span>
+      </div>
+      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>{desc}</div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ color: '#ffd580', fontWeight: 800 }}>R$ {cost}</div>
+        <button disabled={disabled} onClick={onBuy} style={{ background: disabled ? 'rgba(255,255,255,0.06)' : 'linear-gradient(135deg,#27ae60,#1e8449)', color: '#fff', border: 0, padding: '6px 8px', borderRadius: 8, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: 800 }}>Comprar</button>
+      </div>
+    </div>
   );
 }
