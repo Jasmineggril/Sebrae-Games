@@ -189,23 +189,6 @@ function BuyBtn({ label, disabled, onClick }: { label: string; disabled: boolean
   );
 }
 
-function UpgradeCard({ title, desc, cost, onBuy }: { title: string; desc: string; cost: number; onBuy: () => void }) {
-  return (
-    <div style={{
-      background: 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06))',
-      border: '1px solid rgba(255,255,255,0.06)', borderRadius: 12, padding: 10,
-      minWidth: 120, display: 'flex', flexDirection: 'column', gap: 8,
-    }}>
-      <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{title}</div>
-      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>{desc}</div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ color: '#ffd580', fontWeight: 800 }}>R$ {cost}</div>
-        <button onClick={onBuy} style={{ background: 'linear-gradient(135deg,#27ae60,#1e8449)', color: '#fff', border: 0, padding: '6px 8px', borderRadius: 8, cursor: 'pointer', fontWeight: 800 }}>Comprar</button>
-      </div>
-    </div>
-  );
-}
-
 function computeCost(level: number, base: number) {
   // exponential growth per level
   return Math.max(base, Math.ceil(base * Math.pow(1.35, level)));
