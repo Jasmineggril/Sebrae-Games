@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+dist
+build
+.git
+.env
+.env.local
+*.mp4
+*.webm
+artifacts/*/videos
+.DS_Store
+.idea
+*.swp
+*.swo
