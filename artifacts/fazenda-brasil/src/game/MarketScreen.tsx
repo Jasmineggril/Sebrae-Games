@@ -8,7 +8,7 @@ export default function MarketScreen({ onBack }: Props) {
       fontFamily: "'Segoe UI', sans-serif",
       overflow: "auto",
     }}>
-      {/* Stars background */}
+      {/* Fundo estrelado */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
         {Array.from({ length: 40 }, (_, i) => (
           <div key={i} style={{
@@ -26,7 +26,7 @@ export default function MarketScreen({ onBack }: Props) {
 
       <div style={{ position: "relative", zIndex: 1, padding: "28px 36px", maxWidth: 900, margin: "0 auto" }}>
 
-        {/* Header */}
+        {/* Cabeçalho */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 32 }}>
           <div>
             <div style={{ color: "#4fc3f7", fontSize: 12, fontWeight: 700, letterSpacing: 3, marginBottom: 6, textTransform: "uppercase" }}>
@@ -46,10 +46,10 @@ export default function MarketScreen({ onBack }: Props) {
           </button>
         </div>
 
-        {/* Pitch cards grid */}
+        {/* Grade de apresentação */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
 
-          {/* Target audience */}
+          {/* Público-alvo */}
           <Card title="🎯 Público-Alvo" color="#1565c0">
             <StatItem emoji="👨‍🌾" label="Produtores rurais" value="40M pessoas" />
             <StatItem emoji="📱" label="Gamers casuais BR" value="120M+ jogadores" />
@@ -57,7 +57,7 @@ export default function MarketScreen({ onBack }: Props) {
             <StatItem emoji="🏢" label="Empresas do agro" value="B2B capacitação" />
           </Card>
 
-          {/* Market size */}
+          {/* Tamanho de mercado */}
           <Card title="📈 Tamanho de Mercado" color="#6a1b9a">
             <StatItem emoji="🌎" label="Mercado global games" value="US$ 455 bi (2024)" />
             <StatItem emoji="🇧🇷" label="Mercado jogos BR" value="R$ 10 bi/ano" />
@@ -65,7 +65,7 @@ export default function MarketScreen({ onBack }: Props) {
             <StatItem emoji="📲" label="Mobile games LATAM" value="Crescimento 18%/ano" />
           </Card>
 
-          {/* Monetization */}
+          {/* Monetização */}
           <Card title="💰 Estratégia de Monetização" color="#1b5e20">
             <StatItem emoji="🆓" label="Modelo base" value="Free-to-Play" />
             <StatItem emoji="🌱" label="IAP — sementes premium" value="R$ 1,99–9,99" />
@@ -73,7 +73,7 @@ export default function MarketScreen({ onBack }: Props) {
             <StatItem emoji="🏢" label="Licença B2B Sebrae" value="SaaS educacional" />
           </Card>
 
-          {/* Differentials */}
+          {/* Diferenciais */}
           <Card title="✨ Diferenciais Competitivos" color="#b71c1c">
             <StatItem emoji="📊" label="Dados reais do IBGE/Sebrae" value="Único no segmento" />
             <StatItem emoji="🧠" label="Decisão orgânico vs químico" value="Pensamento crítico" />
@@ -82,7 +82,7 @@ export default function MarketScreen({ onBack }: Props) {
           </Card>
         </div>
 
-        {/* Projections */}
+        {/* Projeções */}
         <div style={{
           background: "rgba(255,255,255,0.04)",
           border: "1px solid rgba(255,255,255,0.1)",
@@ -114,7 +114,7 @@ export default function MarketScreen({ onBack }: Props) {
           </div>
         </div>
 
-        {/* Sebrae alignment */}
+        {/* Alinhamento com o Sebrae */}
         <div style={{
           background: "linear-gradient(135deg, rgba(39,174,96,0.12), rgba(27,94,32,0.2))",
           border: "1px solid rgba(39,174,96,0.3)",

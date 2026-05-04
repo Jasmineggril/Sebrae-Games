@@ -37,7 +37,7 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
     const ref = map[tutorialStep];
     if (!ref || !ref.current) { setIndicator(null); return; }
     const rect = ref.current.getBoundingClientRect();
-    // position indicator above the button
+    // Posiciona o indicador acima do botão
     setIndicator({ left: rect.left + rect.width / 2, top: rect.top - 10, text: tutorialStep === 1 ? 'Clique em Plantar' : tutorialStep === 3 ? 'Clique em Regar' : 'Clique em Colher' });
     const onResize = () => {
       const r = ref.current?.getBoundingClientRect();
@@ -74,7 +74,7 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
         </span>
       </div>
 
-      {/* Coins */}
+      {/* Moedas */}
       <div style={{
         background: "linear-gradient(135deg, #f39c12, #d35400)",
         borderRadius: 12, padding: "6px 14px",
@@ -86,7 +86,7 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
         💰 R$ {state.coins}
       </div>
 
-      {/* Stats */}
+      {/* Resumo */}
       <div style={{
         background: "rgba(255,255,255,0.06)",
         border: "1px solid rgba(255,255,255,0.1)",
@@ -100,7 +100,7 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
 
       <div style={{ flex: 1 }} />
 
-      {/* Tools */}
+      {/* Ferramentas */}
       <style>{`@keyframes pulseHighlight { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.02); } 100% { transform: translateY(0) scale(1); } }`}</style>
       <div style={{ display: "flex", gap: 6 }}>
         {TOOLS.map(tool => {
@@ -143,7 +143,7 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
         </div>
       )}
 
-      {/* Crop selector */}
+      {/* Seletor de sementes */}
       {state.selectedTool === "plant" && (
         <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "wrap" }}>
           <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 600 }}>SEMENTE:</span>
@@ -184,7 +184,7 @@ export default function HUD({ state, onSelectTool, onSelectCrop, onShop, onMenu,
         </div>
       )}
 
-      {/* Right buttons */}
+      {/* Ações rápidas */}
       <button
         onClick={onShop}
         style={{

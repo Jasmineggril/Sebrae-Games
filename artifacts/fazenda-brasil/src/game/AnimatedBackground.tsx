@@ -33,13 +33,13 @@ export default function AnimatedBackground() {
         }
       `}</style>
 
-      {/* Sky */}
+      {/* Céu */}
       <div style={{
         position: "absolute", inset: 0,
         background: "linear-gradient(180deg, #29b6f6 0%, #4fc3f7 25%, #81d4fa 45%, #b3e5fc 58%, #c8e6c9 68%, #81c784 80%, #4caf50 90%, #388e3c 100%)",
       }} />
 
-      {/* Sun rays */}
+      {/* Raios do sol */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
         <div key={i} style={{
           position: "absolute", top: "7%", right: "9%",
@@ -52,7 +52,7 @@ export default function AnimatedBackground() {
         }} />
       ))}
 
-      {/* Sun */}
+      {/* Sol */}
       <div style={{
         position: "absolute", top: "6%", right: "8%",
         width: 90, height: 90, borderRadius: "50%",
@@ -61,7 +61,7 @@ export default function AnimatedBackground() {
         zIndex: 2,
       }} />
 
-      {/* Clouds */}
+      {/* Nuvens */}
       {cloudData.map((c, i) => (
         <div key={i} style={{
           position: "absolute", top: `${c.top}%`,
@@ -77,7 +77,7 @@ export default function AnimatedBackground() {
         </div>
       ))}
 
-      {/* Birds */}
+      {/* Pássaros */}
       {[{ top: 9, delay: 0, scale: 1.1 }, { top: 13, delay: -6, scale: 0.75 }, { top: 7, delay: -11, scale: 0.9 }].map((b, i) => (
         <div key={i} style={{
           position: "absolute", top: `${b.top}%`,
@@ -88,7 +88,7 @@ export default function AnimatedBackground() {
         }}>🐦</div>
       ))}
 
-      {/* Rolling green hills */}
+      {/* Morros verdes */}
       <div style={{
         position: "absolute", bottom: 0, left: "-5%", right: "-5%",
         height: "38%",
@@ -104,14 +104,14 @@ export default function AnimatedBackground() {
         animationDelay: "-3s", zIndex: 1,
       }} />
 
-      {/* Grass foreground strip */}
+      {/* Faixa de grama frontal */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0, height: "15%",
         background: "linear-gradient(180deg, transparent, rgba(27,94,32,0.8) 60%, #1b5e20 100%)",
         zIndex: 2,
       }} />
 
-      {/* Decorative trees */}
+      {/* Árvores decorativas */}
       {[5, 15, 82, 93].map((left, i) => (
         <div key={i} style={{
           position: "absolute", bottom: "14%", left: `${left}%`,

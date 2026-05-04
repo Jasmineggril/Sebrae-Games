@@ -92,7 +92,6 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
     setParticles(prev => prev.filter(p => p.id !== id));
   }, []);
 
-  // Check and unlock achievements
   const checkAchievements = useCallback((newState: GameState): { state: GameState; unlocked: Achievement | null } => {
     let unlocked: Achievement | null = null;
     const achievements = newState.achievements.map(a => {
@@ -112,7 +111,6 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
     return { state: { ...newState, achievements }, unlocked };
   }, []);
 
-  // Add XP and level up
   const addXP = useCallback((current: GameState, amount: number): GameState => {
     const newXP = current.xp + amount;
     const newLevel = Math.min(MAX_LEVEL, Math.floor(newXP / XP_PER_LEVEL) + 1);
@@ -124,7 +122,6 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
     return { ...current, xp: newXP, level: newLevel };
   }, []);
 
-  // Update objectives helper
   const updateObjectives = useCallback((
     current: GameState,
     updates: { plantCount?: number; earnAmount?: number; organicCount?: number; waterCount?: number; harvestCount?: number; harvestCafe?: number }
@@ -154,7 +151,6 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
     return { state: { ...current, objectives }, bonusCoins };
   }, [showToast]);
 
-  // Grow crops timer
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
@@ -163,7 +159,6 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         plots: prev.plots.map(plot => {
           if ((plot.state === "planted" || plot.state === "watered") && plot.plantedAt && plot.crop) {
             const base = CROPS[plot.crop].growthTime * 1000;
-            // apply upgrade effects: wateringEfficiency reduces time further
             const wateringEff = prev.upgrades?.wateringEfficiency ?? 0;
             const wateredMultiplier = Math.max(0.4, 0.65 - (wateringEff * 0.03));
             const multiplier = plot.strategy === "chemical" ? 0.55 : plot.state === "watered" ? wateredMultiplier : 1;
@@ -178,14 +173,12 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
     return () => clearInterval(interval);
   }, []);
 
-  // Day counter
   useEffect(() => {
     const interval = setInterval(() => {
       setState(prev => {
         const newDay = prev.day + 1;
         const passive = prev.level * 2 + (prev.upgrades?.sellBonus ?? 0);
         if (passive > 0) {
-          // small daily bonus to keep loop engaging
           setTimeout(() => showToast(`Bônus do dia: +R$${passive}`), 400);
         }
         return { ...prev, day: newDay, objectives: makeObjectives(newDay - 1), coins: prev.coins + passive };
@@ -194,38 +187,32 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
     return () => clearInterval(interval);
   }, []);
 
-  // Tutorial auto-advance: when player plants, waters or harvests, advance tutorial steps and show overlay hints
   useEffect(() => {
-    // after planting (some plot becomes planted)
     if (tutorialStep === 2) {
       const planted = state.plots.some(p => p.state === "planted");
       if (planted) {
         setShowTutorial(true);
-        setTutorialStepState(3); // show water step
+        setTutorialStepState(3);
       }
     }
-    // after watering
     if (tutorialStep === 3) {
       const watered = state.plots.some(p => p.state === "watered");
       if (watered) {
         setShowTutorial(true);
-        setTutorialStepState(4); // show harvest step
+        setTutorialStepState(4);
       }
     }
   }, [state.plots, tutorialStep]);
 
   useEffect(() => {
-    // when strategy modal opens after initial plant click, advance to strategy step
     if (tutorialStep === 1 && modal.kind === "strategy") {
       setTutorialStepState(2);
     }
 
-    // when harvest event produced a ficha modal
     if (tutorialStep === 4 && modal.kind === "ficha") {
       setShowTutorial(true);
-      setTutorialStepState(5); // show ficha/learn step
+      setTutorialStepState(5);
     }
-    // after ficha closed, move to final step (feira) and show overlay
     if (tutorialStep === 5 && modal.kind === "none") {
       setShowTutorial(true);
       setTutorialStepState(6);
@@ -348,10 +335,10 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         ),
       };
 
-      // Add XP
+      // Soma a experiência da colheita
       updated = addXP(updated, xpGain);
 
-      // Update objectives
+      // Atualiza as metas da rodada
       const { state: afterObj, bonusCoins } = updateObjectives(updated, {
         earnAmount: earned,
         harvestCount: 1,
@@ -359,7 +346,7 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
       });
       updated = { ...afterObj, coins: afterObj.coins + bonusCoins };
 
-      // Check achievements
+      // Confere se alguma conquista foi desbloqueada
       const { state: afterAch, unlocked } = checkAchievements(updated);
       if (unlocked) {
         setTimeout(() => setPendingAchievement(unlocked), 800);
@@ -427,7 +414,7 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         <TutorialOverlay
           step={tutorialStep}
           setStep={(n: number) => {
-            // when moving to the first actionable step, hide overlay so player can interact
+            // Ao chegar na primeira ação, esconde o overlay para liberar o jogo
             if (n === 1) {
               setShowTutorial(false);
               setTutorialStepState(1);
@@ -463,10 +450,10 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         tutorialStep={tutorialStep}
         onSelectTool={(tool) => {
           setState(prev => ({ ...prev, selectedTool: tool as Tool }));
-          // advance tutorial if player selected the expected tool
+          // Avança o tutorial se o jogador escolheu a ferramenta esperada
           const expected: Record<number, Tool> = { 1: 'plant', 3: 'water', 4: 'harvest' };
           if (tutorialStep in expected && expected[tutorialStep] === tool) {
-            // hide focus overlay to allow interaction with game
+            // Esconde o foco para liberar a interação com o jogo
             setShowTutorial(false);
             setTutorialStepState(tutorialStep + 1);
           }
@@ -477,7 +464,7 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         onRestart={handleRestart}
       />
 
-      {/* Tutorial focus overlay: blocks interaction except HUD when tutorial expects a tool click */}
+      {/* Overlay do tutorial: bloqueia a tela quando a próxima ação precisa de atenção */}
       {([1, 3, 4].includes(tutorialStep)) && (
         <div style={{
           position: 'fixed', inset: 0, zIndex: 30,
@@ -506,7 +493,7 @@ export default function FazendaGame({ onMenu, onRestart }: Props) {
         </div>
       )}
 
-      {/* Main content: side panel + farm grid */}
+      {/* Conteúdo principal: painel lateral e grade da fazenda */}
       <div style={{
         flex: 1,
         display: "flex",

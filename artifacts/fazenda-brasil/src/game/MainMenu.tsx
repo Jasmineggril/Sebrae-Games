@@ -15,7 +15,7 @@ export default function MainMenu({ onStart, onMarket }: Props) {
         flexDirection: "column", alignItems: "center", justifyContent: "center",
         zIndex: 10, gap: 0,
       }}>
-        {/* Title card */}
+        {/* Cartão de título */}
         <div style={{
           background: "rgba(0,0,0,0.60)",
           backdropFilter: "blur(20px)",
@@ -38,7 +38,7 @@ export default function MainMenu({ onStart, onMarket }: Props) {
           </p>
         </div>
 
-        {/* Crop showcase */}
+        {/* Culturas em destaque */}
         <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
           {[
             { emoji: "🌽", name: "Milho", color: "#f5c518" },
@@ -65,7 +65,7 @@ export default function MainMenu({ onStart, onMarket }: Props) {
           ))}
         </div>
 
-        {/* Buttons */}
+        {/* Botão principal */}
         <button
           onClick={onStart}
           style={{
@@ -90,7 +90,7 @@ export default function MainMenu({ onStart, onMarket }: Props) {
           ▶ JOGAR AGORA
         </button>
 
-        {/* Market pitch button */}
+        {/* Botão de mercado */}
         <button
           onClick={onMarket}
           style={{
@@ -114,7 +114,7 @@ export default function MainMenu({ onStart, onMarket }: Props) {
           📊 Ver Potencial de Mercado
         </button>
 
-        {/* How to play strip */}
+        {/* Atalho de como jogar */}
         <div style={{
           background: "rgba(0,0,0,0.5)",
           backdropFilter: "blur(10px)",

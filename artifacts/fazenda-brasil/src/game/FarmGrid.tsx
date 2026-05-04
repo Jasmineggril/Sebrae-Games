@@ -142,21 +142,21 @@ function PlotCell({ plot, selectedTool, onPlotClick }: {
         userSelect: "none", overflow: "hidden",
       }}
     >
-      {/* Top gloss */}
+      {/* Brilho superior */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, height: "40%",
         background: "linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 100%)",
         borderRadius: "16px 16px 0 0", pointerEvents: "none",
       }} />
 
-      {/* Bottom shadow */}
+      {/* Sombra inferior */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0, height: "35%",
         background: "linear-gradient(0deg, rgba(0,0,0,0.3) 0%, transparent 100%)",
         borderRadius: "0 0 16px 16px", pointerEvents: "none",
       }} />
 
-      {/* Soil rows (empty) */}
+      {/* Linhas do solo vazio */}
       {plot.state === "empty" && (
         <div style={{ position: "absolute", inset: 0, overflow: "hidden", borderRadius: 14 }}>
           {[18, 36, 54, 70].map(y => (
@@ -168,10 +168,10 @@ function PlotCell({ plot, selectedTool, onPlotClick }: {
         </div>
       )}
 
-      {/* Water animation */}
+      {/* Animação da rega */}
       {plot.state === "watered" && <WaterDroplets />}
 
-      {/* Strategy badge */}
+      {/* Selo da estratégia */}
       {plot.strategy && plot.state !== "empty" && (
         <div style={{
           position: "absolute", top: 5, left: 5,
@@ -185,7 +185,7 @@ function PlotCell({ plot, selectedTool, onPlotClick }: {
         </div>
       )}
 
-      {/* Crop growth stages */}
+      {/* Estágios de crescimento */}
       {stage.emoji && (
         <div style={{
           fontSize: stage.size,
@@ -201,7 +201,7 @@ function PlotCell({ plot, selectedTool, onPlotClick }: {
         </div>
       )}
 
-      {/* Crop name below emoji */}
+      {/* Nome da cultura */}
       {plot.crop && plot.state !== "empty" && !isReady && (
         <div style={{
           fontSize: 9, color: "rgba(255,255,255,0.45)",
@@ -212,12 +212,12 @@ function PlotCell({ plot, selectedTool, onPlotClick }: {
         </div>
       )}
 
-      {/* Empty icon */}
+      {/* Ícone do canteiro vazio */}
       {plot.state === "empty" && !hovered && (
         <div style={{ fontSize: 24, opacity: 0.15, zIndex: 2 }}>🪴</div>
       )}
 
-      {/* Hover hint */}
+      {/* Dica ao passar o mouse */}
       {hovered && canInteract && plot.state === "empty" && (
         <div style={{ fontSize: 28, opacity: 0.85, zIndex: 2, filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))" }}>🌱</div>
       )}
@@ -225,7 +225,7 @@ function PlotCell({ plot, selectedTool, onPlotClick }: {
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: 24, opacity: 0.8, zIndex: 3 }}>💧</div>
       )}
 
-      {/* Ready label */}
+      {/* Selo de pronto */}
       {isReady && (
         <div style={{
           position: "absolute", top: 4, left: "50%", transform: "translateX(-50%)",
@@ -250,7 +250,7 @@ export default function FarmGrid({ plots, selectedTool, soilQuality, onPlotClick
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 10 }}>
-      {/* Soil quality bar */}
+      {/* Barra de qualidade do solo */}
       <div style={{
         background: "rgba(0,0,0,0.55)",
         backdropFilter: "blur(14px)",
@@ -279,7 +279,7 @@ export default function FarmGrid({ plots, selectedTool, soilQuality, onPlotClick
         </span>
       </div>
 
-      {/* Farm grid */}
+      {/* Grade da fazenda */}
       <div style={{
         background: "rgba(0,0,0,0.45)",
         backdropFilter: "blur(18px)",

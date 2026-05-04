@@ -22,7 +22,7 @@ export default function SidePanel({ state }: Props) {
       maxHeight: "100%",
       overflow: "hidden",
     }}>
-      {/* Level + XP card */}
+      {/* Nível e XP */}
       <div style={{
         background: "rgba(0,0,0,0.55)",
         backdropFilter: "blur(16px)",
@@ -58,7 +58,7 @@ export default function SidePanel({ state }: Props) {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Resumo da fazenda */}
       <div style={{
         background: "rgba(0,0,0,0.55)",
         backdropFilter: "blur(16px)",
@@ -87,7 +87,7 @@ export default function SidePanel({ state }: Props) {
           }} />
         </div>
 
-        {/* Seed counts */}
+        {/* Sementes */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {(Object.keys(CROPS) as CropType[]).map(crop => {
             const def = CROPS[crop];
@@ -110,7 +110,7 @@ export default function SidePanel({ state }: Props) {
         </div>
       </div>
 
-      {/* Ready alert */}
+      {/* Aviso de colheita */}
       {readyCount > 0 && (
         <div style={{
           background: "linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,160,0,0.1))",
@@ -128,7 +128,7 @@ export default function SidePanel({ state }: Props) {
         </div>
       )}
 
-      {/* Objectives */}
+      {/* Metas */}
       <ObjectivesPanel objectives={state.objectives} day={state.day} />
 
       <style>{`

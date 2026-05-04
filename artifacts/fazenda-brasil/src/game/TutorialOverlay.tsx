@@ -11,37 +11,37 @@ const STEPS: Step[] = [
   {
     emoji: "🌾",
     title: "Bem-vindo à Fazenda Brasil!",
-    desc: "Você é um produtor rural brasileiro. Gerencie sua fazenda, tome decisões inteligentes e aprenda sobre o agronegócio do nosso país!",
+    desc: "Gerencie a fazenda, tome decisões e aprenda jogando.",
   },
   {
     emoji: "🌱",
     title: "Passo 1: Plantar",
-    desc: "Com a ferramenta \"Plantar\" selecionada, clique em qualquer canteiro marrom vazio. Você vai escolher como quer cultivar!",
+    desc: "Selecione \"Plantar\" e clique em um canteiro vazio.",
   },
   {
     emoji: "⚖️",
     title: "Passo 2: Estratégia",
-    desc: "Cada plantio pede uma decisão: 🌿 Orgânico preserva o solo mas cresce devagar. ⚡ Químico cresce rápido mas degrada o solo. Solo ruim = menos produção!",
+    desc: "Orgânico preserva o solo. Químico acelera a colheita.",
   },
   {
     emoji: "💧",
     title: "Passo 3: Regar",
-    desc: "Selecione \"Regar\" e clique numa plantação. A água reduz o tempo de crescimento pela metade! Sempre vale a pena regar.",
+    desc: "Selecione \"Regar\" e clique numa plantação.",
   },
   {
     emoji: "✂️",
     title: "Passo 4: Colher",
-    desc: "Quando o canteiro brilhar em ouro e mostrar \"✨ PRONTO!\", selecione \"Colher\" e clique. Um evento climático pode ajudar ou atrapalhar!",
+    desc: "Quando o canteiro ficar pronto, selecione \"Colher\".",
   },
   {
     emoji: "📊",
     title: "Passo 5: Aprender",
-    desc: "Após cada colheita aparece uma Ficha do Produtor com dados reais do agronegócio brasileiro. Você aprende jogando!",
+    desc: "Após cada colheita, abra a ficha com dados reais.",
   },
   {
     emoji: "🏪",
     title: "Passo 6: Feira do Produtor",
-    desc: "Compre mais sementes na Feira com as moedas que ganhar. Complete missões diárias para bônus extras. Bom plantio! 🌾",
+    desc: "Compre sementes na Feira e conclua missões para bônus.",
   },
 ];
 

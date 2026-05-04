@@ -39,7 +39,7 @@ export default function StrategyModal({ crop, soilQuality, onChoose, onCancel }:
           </p>
         </div>
 
-        {/* Soil indicator */}
+        {/* Indicador do solo */}
         <div style={{
           background: "rgba(255,255,255,0.06)",
           borderRadius: 12,
@@ -59,9 +59,9 @@ export default function StrategyModal({ crop, soilQuality, onChoose, onCancel }:
           <div style={{ color: soilColor, fontWeight: 700, fontSize: 15 }}>{soilQuality}</div>
         </div>
 
-        {/* Options */}
+        {/* Estratégias */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-          {/* Organic */}
+          {/* Orgânico */}
           <button
             onClick={() => onChoose("organic")}
             style={{
@@ -84,7 +84,7 @@ export default function StrategyModal({ crop, soilQuality, onChoose, onCancel }:
             </div>
           </button>
 
-          {/* Chemical */}
+          {/* Químico */}
           <button
             onClick={() => onChoose("chemical")}
             style={{

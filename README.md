@@ -1,19 +1,32 @@
-# 🌾 Sebrae-Games / Fazenda Brasil
+# Sebrae-Games / Fazenda Brasil
 
-Jogo educativo interativo sobre agronegócio brasileiro, desenvolvido com React + TypeScript + Vite. Educação gamificada sobre culturas e sustentabilidade.
+Jogo educativo interativo sobre agronegócio brasileiro, desenvolvido com React, TypeScript e Vite. O objetivo é equilibrar lucro, XP e cuidado com o solo em decisões curtas e objetivas.
 
-## 🎮 Visão Geral
+## Demonstração
 
-**Fazenda Brasil** é um simulador de fazenda com:
-- 🌱 5 culturas (Milho, Soja, Café, Cana, Mandioca)
-- 🎯 Sistema de metas e objetivos dinâmicos
-- ⭐ Badges e conquistas desbloqueáveis
-- 🔧 Sistema de upgrades progressivos (venda, irrigação, ferramentas)
-- 🎓 Fichas educativas sobre cada cultura
-- 🎵 Feedback sonoro via WebAudio
-- 📱 Responsivo e mobile-friendly
+- Link jogável local: [http://localhost:3000](http://localhost:3000)
+- Vídeo da jogabilidade: [artifacts/fazenda-brasil/videos/0ff1fe92601897728e7830b0d5022f9d.webm](artifacts/fazenda-brasil/videos/0ff1fe92601897728e7830b0d5022f9d.webm)
+- Capturas de tela: [thumbnail.png](artifacts/fazenda-brasil/videos/thumbnail.png) e [thumbnail-0ff1.png](artifacts/fazenda-brasil/videos/thumbnail-0ff1.png)
 
-## 📋 Estrutura do Projeto
+![Fazenda Brasil em ação](artifacts/fazenda-brasil/videos/thumbnail.png)
+
+## Visão geral
+
+Fazenda Brasil é um simulador de fazenda com:
+
+- 5 culturas: Milho, Soja, Café, Cana e Mandioca
+- Sistema de metas e objetivos dinâmicos
+- Conquistas desbloqueáveis
+- Upgrades progressivos de venda, irrigação e ferramentas
+- Fichas educativas sobre cada cultura
+- Feedback sonoro via WebAudio
+- Interface responsiva e compatível com dispositivos móveis
+
+## Mecânica central
+
+A principal decisão do jogo está na escolha entre Orgânico e Químico. Essa escolha altera a qualidade do solo, o ritmo da partida e o retorno da safra, criando uma camada estratégica simples de entender e fácil de demonstrar.
+
+## Estrutura do projeto
 
 ```
 Sebrae-Games/
@@ -22,61 +35,60 @@ Sebrae-Games/
 │   │   ├── game/                      # Componentes e lógica do jogo
 │   │   │   ├── FazendaGame.tsx        # Estado e orquestração principal
 │   │   │   ├── FarmGrid.tsx           # Grade da fazenda
-│   │   │   ├── ShopModal.tsx          # Loja (sementes + upgrades)
+│   │   │   ├── ShopModal.tsx          # Loja de sementes e upgrades
 │   │   │   ├── HUD.tsx                # Interface superior
 │   │   │   ├── Sound.ts               # Helpers de som
 │   │   │   ├── types.ts               # Tipos compartilhados
-│   │   │   └── [outros componentes]   # Modais, overlays, etc
+│   │   │   └── [outros componentes]   # Modais e overlays
 │   │   └── main.tsx
 │   ├── package.json
 │   ├── vite.config.ts
 │   └── tsconfig.json
 ├── lib/                               # Bibliotecas compartilhadas
 │   ├── api-spec/                      # Especificação OpenAPI
-│   ├── api-client-react/              # Client HTTP da API
+│   ├── api-client-react/              # Cliente HTTP da API
 │   └── api-zod/                       # Validação com Zod
-├── Dockerfile                         # Build + produção
+├── Dockerfile                         # Build e produção
 ├── docker-compose.yml                 # Orquestração local
 ├── README.md                          # Este arquivo
-└── pnpm-workspace.yaml                # Monorepo config
-
+└── pnpm-workspace.yaml                # Configuração do monorepo
 ```
 
-## 🚀 Quick Start
+## Início rápido
 
-### Desenvolvimento Local
+### Desenvolvimento local
 
-**Requisitos:** Node.js 20+, pnpm 10+
+Requisitos: Node.js 20+ e pnpm 10+
 
 ```bash
-# 1. Clonar e instalar dependências
+# Clonar e instalar dependências
 git clone https://github.com/Jasmineggril/Sebrae-Games.git
 cd Sebrae-Games
 pnpm install
 
-# 2. Iniciar dev server
+# Iniciar o servidor de desenvolvimento
 cd artifacts/fazenda-brasil
 PORT=5173 BASE_PATH=/ pnpm dev
 
 # Acesso: http://localhost:5173
 ```
 
-### Build de Produção
+### Build de produção
 
 ```bash
 cd artifacts/fazenda-brasil
 PORT=3000 BASE_PATH=/ pnpm build
 
-# Output: dist/public/
+# Saída: dist/public/
 ```
 
-### Docker (Recomendado)
+### Docker recomendado
 
 ```bash
-# Build imagem
+# Build da imagem
 docker build -t sebrae-games .
 
-# Executar container
+# Executar o container
 docker run -p 3000:3000 sebrae-games
 
 # Ou com docker-compose
@@ -84,43 +96,43 @@ docker-compose up -d
 # Acesso: http://localhost:3000
 ```
 
-## 🎮 Como Jogar
+## Como jogar
 
-1. **Plante:** Selecione uma cultura e clique em um canteiro vazio
-2. **Escolha a estratégia:** Orgânico (+qualidade solo) ou Químico (+lucro rápido)
-3. **Regue (opcional):** Acelera o crescimento em ~40% do tempo
-4. **Colha:** Quando estiver pronto (pulsando), colha para ganhar moedas + XP
-5. **Upgrade:** Compre melhorias na Feira para aumentar lucro, eficiência e XP
-6. **Evolua:** Suba de nível destravando novas culturas e recursos
+1. Plante: selecione uma cultura e clique em um canteiro vazio.
+2. Escolha a estratégia: Orgânico melhora a qualidade do solo; Químico acelera o lucro.
+3. Regue quando necessário: isso reduz o tempo de crescimento.
+4. Colha quando o canteiro estiver pronto para ganhar moedas e XP.
+5. Compre melhorias na Feira para aumentar lucro, eficiência e XP.
+6. Suba de nível para desbloquear novas culturas e recursos.
 
 ### Mecânicas
 
-- **Soilqualidade:** Orgânico +5, Químico -10. Afeta lucro se < 50
-- **XP:** Venda de culturas + bônus por objetivos e conquistas
-- **Upgrades:**
-  - **+R$ Colheita:** +5 moedas por nível
-  - **Irrigação:** Reduz tempo de crescimento (mín. 40% do original)
-  - **Ferramenta:** +2 XP por colheita, +5% lucro por nível
+- Qualidade do solo: Orgânico +5, Químico -10. Afeta o lucro quando fica abaixo de 50.
+- XP: vem da venda de culturas, objetivos e conquistas.
+- Upgrades:
+  - Colheita: +5 moedas por nível.
+  - Irrigação: reduz o tempo de crescimento para no mínimo 40% do original.
+  - Ferramenta: +2 XP por colheita e +5% de lucro por nível.
 
-## 📦 Stack Técnico
+## Stack técnico
 
-- **Frontend:** React 18 + TypeScript + Vite
-- **Styling:** CSS-in-JS (estilos inline otimizados)
-- **Audio:** WebAudio API nativa (sem bibliotecas externas)
-- **UI:** Componentes customizados com design system próprio
-- **Build:** Vite (dev + prod)
-- **Package Manager:** pnpm (workspaces)
-- **Testing:** Playwright (headless automation)
+- Frontend: React 18 + TypeScript + Vite
+- Styling: CSS-in-JS com estilos inline
+- Audio: WebAudio API nativa, sem bibliotecas externas
+- UI: componentes customizados com design system próprio
+- Build: Vite para desenvolvimento e produção
+- Package manager: pnpm com workspaces
+- Testing: Playwright com automação headless
 
-## 🔧 Desenvolvimento
+## Desenvolvimento
 
 ### Scripts
 
 ```bash
-# Dev server com hot reload
+# Servidor de desenvolvimento com hot reload
 PORT=5173 BASE_PATH=/ pnpm dev
 
-# Build produção otimizado
+# Build de produção otimizado
 PORT=3000 BASE_PATH=/ pnpm build
 
 # Analisar tamanho do bundle
@@ -133,11 +145,10 @@ node scripts/walkthrough.cjs
 node scripts/walkthrough-video.cjs
 ```
 
-### Estrutura de Código
+### Estrutura de código
 
-**State Management:** React hooks (useState, useCallback, useEffect)
+State management: React hooks (`useState`, `useCallback`, `useEffect`)
 
-**Game State:**
 ```typescript
 interface GameState {
   coins: number
@@ -152,50 +163,49 @@ interface GameState {
 }
 ```
 
-**Loop Principal:**
-1. `FazendaGame` gerencia estado global
-2. `FarmGrid` renderiza grid interativa
-3. Cliques disparam `handlePlotClick` → estratégia → acréscimo de XP/moedas
-4. Upgrades aplicam modificadores em ganhos/tempo
-5. Objetivos e conquistas checam progresso
+Loop principal:
 
-## 🎯 Features Implementadas
+1. `FazendaGame` gerencia o estado global.
+2. `FarmGrid` renderiza a grade interativa.
+3. Cliques disparam `handlePlotClick`, que aplica estratégia e atualiza XP e moedas.
+4. Upgrades aplicam modificadores em ganhos e tempo.
+5. Objetivos e conquistas acompanham o progresso.
 
-✅ Tutorial interativo com focos guiados  
-✅ HUD com destaque de ações durante tutorial  
-✅ Sistema de upgrades com custo dinâmico (exponencial)  
-✅ Loja de sementes e melhorias  
-✅ Metas dinâmicas (trocam a cada dia)  
-✅ Conquistas desbloqueáveis  
-✅ Fichas educativas sobre culturas  
-✅ Feedback sonoro (clique, rega, colheita, compra)  
-✅ Partículas de moedas animadas  
-✅ Bônus diário passivo (escalável com nível)  
-✅ Build otimizado (<300KB gzipped)  
+## Funcionalidades implementadas
 
-## 📊 Performance
+- Tutorial interativo com foco guiado.
+- HUD com destaque de ações durante o tutorial.
+- Sistema de upgrades com custo dinâmico e progressivo.
+- Loja de sementes e melhorias.
+- Metas dinâmicas que mudam a cada dia.
+- Conquistas desbloqueáveis.
+- Fichas educativas sobre culturas.
+- Feedback sonoro para clique, rega, colheita e compra.
+- Partículas de moedas animadas.
+- Bônus diário passivo escalável com o nível.
+- Build leve, abaixo de 300KB gzipped.
 
-- **Bundle size:** 260KB (JS) + 0.9KB (CSS) → ~78KB gzip
-- **Startup:** ~250ms (local)
-- **60 FPS:** Animações e particles otimizadas
-- **Mobile:** Responsivo, sem dependências pesadas
+## Performance
 
-## 🌐 Deploy
+- Bundle size: 260KB (JS) + 0.9KB (CSS), cerca de 78KB gzip.
+- Startup: aproximadamente 250ms em ambiente local.
+- 60 FPS: animações e particles otimizadas.
+- Mobile: responsivo e sem dependências pesadas.
 
-### GitHub Pages (Estático)
+## Implantação
+
+### GitHub Pages
 
 ```bash
-# Build
 pnpm build
 
-# Copiar dist/public/* para gh-pages branch
+# Copiar dist/public/* para a branch gh-pages
 # ou usar GitHub Actions (veja .github/workflows/)
 ```
 
 ### Vercel / Netlify
 
 ```bash
-# Vercel detecta automaticamente
 vercel
 ```
 
@@ -204,58 +214,59 @@ vercel
 ```bash
 docker build -t sebrae-games .
 docker push [seu-registry]/sebrae-games
-# Deploy em Kubernetes, Cloud Run, etc
+# Deploy em Kubernetes, Cloud Run ou outro provedor compatível
 ```
 
-### Replit (Conforme replit.md)
+### Replit
 
 ```bash
 pnpm install
 PORT=3000 BASE_PATH=/ pnpm build && npm install -g serve && serve -s artifacts/fazenda-brasil/dist/public -l 3000
 ```
 
-## 🧪 Testing
+## Testes
 
-Testes automatizados via Playwright (headless):
+Testes automatizados via Playwright:
 
 ```bash
 cd artifacts/fazenda-brasil
 npx playwright install
-node scripts/walkthrough-video.cjs  # Gera vídeo de teste
+node scripts/walkthrough-video.cjs
 ```
 
-## 📚 Referências & Educação
+## Referências e educação
 
 Cada cultura tem uma ficha com dados reais:
-- **Milho:** 137M toneladas/ano, 2º maior exportador
-- **Soja:** 163M toneladas/ano, 36% produção global
-- **Café:** 150+ anos liderando, R$38B exportados
-- **Cana:** Etanol −90% CO₂ vs gasolina
-- **Mandioca:** Alimenta 800M pessoas, 100% do Brasil
 
-## 🤝 Contribuindo
+- Milho: 137M toneladas/ano, 2º maior exportador.
+- Soja: 163M toneladas/ano, 36% da produção global.
+- Café: mais de 150 anos de liderança, R$ 38 bilhões exportados.
+- Cana: etanol com redução de até 90% de CO₂ em relação à gasolina.
+- Mandioca: alimenta 800M pessoas e é cultivada em todo o Brasil.
 
-1. Fork do repositório
-2. Crie uma branch: `git checkout -b feature/minha-feature`
-3. Commit: `git commit -m "feat: descrição"`
-4. Push: `git push origin feature/minha-feature`
-5. Abra um Pull Request
+## Contribuindo
 
-## 📝 Licença
+1. Faça um fork do repositório.
+2. Crie uma branch: `git checkout -b feature/minha-feature`.
+3. Faça o commit: `git commit -m "feat: descrição"`.
+4. Envie a branch: `git push origin feature/minha-feature`.
+5. Abra um Pull Request.
 
-MIT - Veja LICENSE para detalhes
+## Licença
 
-## 👥 Autores
+MIT. Veja LICENSE para detalhes.
 
-- Desenvolvido para **SEBRAE** (Serviço Brasileiro de Apoio às Micro e Pequenas Empresas)
-- Jogo educativo sobre agronegócio brasileiro
+## Autores
 
-## 🐛 Issues & Sugestões
+- Desenvolvido para o SEBRAE (Serviço Brasileiro de Apoio às Micro e Pequenas Empresas).
+- Jogo educativo sobre agronegócio brasileiro.
+
+## Issues e sugestões
 
 Abra uma issue em https://github.com/Jasmineggril/Sebrae-Games/issues
 
 ---
 
-**Versão:** 1.0.0  
-**Última Atualização:** Maio 2026  
-**Status:** Production Ready ✅
+Versão: 1.0.0
+Última atualização: Maio 2026
+Status: Pronto para uso

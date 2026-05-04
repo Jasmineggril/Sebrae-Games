@@ -57,7 +57,7 @@ export default function LevelUpModal({ level, reward, onClose }: Props) {
         minWidth: 340,
         pointerEvents: "auto",
       }}>
-        {/* Star decorations */}
+        {/* Estrelas decorativas */}
         {["⭐","🌟","✨","💫"].map((s, i) => (
           <div key={i} style={{
             position: "absolute",

@@ -24,7 +24,7 @@ export default function FichaModal({ crop, earned, onClose }: Props) {
         boxShadow: "0 24px 80px rgba(0,0,100,0.5), 0 0 40px rgba(79,195,247,0.1)",
         animation: "fadeInUp 0.35s cubic-bezier(0.34,1.56,0.64,1)",
       }}>
-        {/* Hero header */}
+        {/* Cabeçalho principal */}
         <div style={{
           background: `linear-gradient(135deg, ${def.color2}, ${def.color})`,
           padding: "24px",
@@ -32,7 +32,7 @@ export default function FichaModal({ crop, earned, onClose }: Props) {
           position: "relative",
           overflow: "hidden",
         }}>
-          {/* Background glow */}
+          {/* Brilho de fundo */}
           <div style={{
             position: "absolute", inset: 0,
             background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 70%)",
@@ -49,7 +49,7 @@ export default function FichaModal({ crop, earned, onClose }: Props) {
         </div>
 
         <div style={{ padding: "20px 24px 0" }}>
-          {/* Stat badge */}
+          {/* Dado real */}
           <div style={{
             background: "rgba(79,195,247,0.1)",
             border: "1px solid rgba(79,195,247,0.25)",
@@ -66,7 +66,7 @@ export default function FichaModal({ crop, earned, onClose }: Props) {
             </div>
           </div>
 
-          {/* Fact */}
+          {/* Fato */}
           <p style={{
             color: "rgba(255,255,255,0.8)",
             fontSize: 14, lineHeight: 1.75,
@@ -75,7 +75,7 @@ export default function FichaModal({ crop, earned, onClose }: Props) {
             {def.fichaFact}
           </p>
 
-          {/* Earned */}
+          {/* Ganho */}
           <div style={{
             background: "linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,215,0,0.06))",
             border: "1px solid rgba(255,215,0,0.3)",
@@ -91,7 +91,7 @@ export default function FichaModal({ crop, earned, onClose }: Props) {
             <div style={{ color: "#f39c12", fontSize: 12, marginTop: 2 }}>adicionado ao seu caixa!</div>
           </div>
 
-          {/* Source */}
+          {/* Fonte */}
           <div style={{
             display: "flex", alignItems: "center", gap: 8,
             background: "rgba(255,255,255,0.04)", borderRadius: 8, padding: "7px 12px", marginBottom: 16,

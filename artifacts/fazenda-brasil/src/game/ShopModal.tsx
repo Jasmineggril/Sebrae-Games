@@ -31,7 +31,7 @@ export default function ShopModal({ coins, seeds, playerLevel, onBuy, onBuyUpgra
         boxShadow: "0 24px 64px rgba(0,0,0,0.7), 0 0 40px rgba(39,174,96,0.1)",
         animation: "fadeInUp 0.3s ease",
       }}>
-        {/* Header */}
+        {/* Cabeçalho */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
           <div>
             <h2 style={{ color: "#FFD700", margin: 0, fontSize: 22, fontWeight: 900 }}>

@@ -4,7 +4,7 @@ interface Props {
   onDone: () => void;
 }
 
-// Instant loading — just a brief flash of the splash
+// Carregamento rápido para a tela principal aparecer
 export default function LoadingScreen({ onDone }: Props) {
   useEffect(() => {
     const t = setTimeout(onDone, 800);
