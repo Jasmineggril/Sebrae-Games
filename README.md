@@ -1,11 +1,16 @@
 # Sebrae-Games / Fazenda Brasil
 
-Jogo educativo interativo sobre agronegócio brasileiro, desenvolvido com React, TypeScript e Vite. O objetivo é equilibrar lucro, XP e cuidado com o solo em decisões curtas e objetivas.
+Fazenda Brasil é um jogo educativo interativo sobre agronegócio brasileiro, desenvolvido com React, TypeScript e Vite. O jogador administra uma fazenda, planta culturas reais do Brasil, escolhe estratégias de manejo (Orgânico ou Químico), evolui com upgrades e aprende sobre produtividade, sustentabilidade e mercado de forma prática.
+
+## Jogar agora
+
+- Jogo publicado e funcionando no itch.io: [Fazenda Brasil](https://jasmineggril.itch.io/fazenda-brasil)
+- Link jogável local: [http://localhost:3000](http://localhost:3000)
 
 ## Demonstração
 
-- Link jogável local: [http://localhost:3000](http://localhost:3000)
-- Vídeo da jogabilidade: [artifacts/fazenda-brasil/videos/0ff1fe92601897728e7830b0d5022f9d.webm](artifacts/fazenda-brasil/videos/0ff1fe92601897728e7830b0d5022f9d.webm)
+- Vídeo no YouTube: [https://youtu.be/nVp1x4idLtg](https://youtu.be/nVp1x4idLtg)
+- Vídeo da jogabilidade (arquivo local): [artifacts/fazenda-brasil/videos/0ff1fe92601897728e7830b0d5022f9d.webm](artifacts/fazenda-brasil/videos/0ff1fe92601897728e7830b0d5022f9d.webm)
 - Capturas de tela: [thumbnail.png](artifacts/fazenda-brasil/videos/thumbnail.png) e [thumbnail-0ff1.png](artifacts/fazenda-brasil/videos/thumbnail-0ff1.png)
 
 ![Fazenda Brasil em ação](artifacts/fazenda-brasil/videos/thumbnail.png)
