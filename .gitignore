@@ -47,3 +47,7 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Butler artifacts (local upload tooling)
+artifacts/fazenda-brasil/butler-bin/
+artifacts/fazenda-brasil/butler-linux-amd64.zip
